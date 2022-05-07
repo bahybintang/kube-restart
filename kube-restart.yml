@@ -1,0 +1,9 @@
+deployments:
+- name: nginx
+  namespace: default
+  schedule: "* * * * *"
+
+statefulsets:
+- name: redis
+  namespace: default
+  schedule: "* * * * *"
