@@ -20,7 +20,7 @@ func RestartDeployment(deployment *model.App) error {
 	logrus.Info(fmt.Sprintf("Restarting deployment: %v (%v)", deployment.Name, deployment.Namespace))
 	err := RestartApp(deployment, &schema.GroupVersionResource{Group: "apps", Version: "v1", Resource: "deployments"})
 	if err != nil {
-		logrus.Error(fmt.Sprintf("Deployment restart failed: %v (%v)", deployment.Name, deployment.Namespace))
+		logrus.Error(fmt.Sprintf("Deployment restart failed: %v (%v)", deployment.Name, deployment.Namespace), err)
 	}
 	logrus.Info(fmt.Sprintf("Deployment restarted: %v (%v)", deployment.Name, deployment.Namespace))
 	return nil
@@ -30,7 +30,7 @@ func RestartStatefulSet(sts *model.App) error {
 	logrus.Info(fmt.Sprintf("Restarting statefulset: %v (%v)", sts.Name, sts.Namespace))
 	err := RestartApp(sts, &schema.GroupVersionResource{Group: "apps", Version: "v1", Resource: "statefulsets"})
 	if err != nil {
-		logrus.Error(fmt.Sprintf("Statefulset restart failed: %v (%v)", sts.Name, sts.Namespace))
+		logrus.Error(fmt.Sprintf("Statefulset restart failed: %v (%v)", sts.Name, sts.Namespace), err)
 	}
 	logrus.Info(fmt.Sprintf("Statefulset restarted: %v (%v)", sts.Name, sts.Namespace))
 	return nil

@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/go-playground/validator v9.31.0+incompatible
+	github.com/robfig/cron/v3 v3.0.0
 	github.com/sirupsen/logrus v1.8.1
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	k8s.io/apimachinery v0.24.0

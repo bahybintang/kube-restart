@@ -6,4 +6,4 @@ deployments:
 statefulsets:
 - name: demo-statefulsets-redis-replicas
   namespace: default
-  schedule: "* * * * *"
+  schedule: "*/5 * * * *"
