@@ -1,9 +1,9 @@
 deployments:
-- name: nginx
+- name: demo-deployment
   namespace: default
   schedule: "* * * * *"
 
 statefulsets:
-- name: redis
+- name: demo-statefulsets-redis-replicas
   namespace: default
   schedule: "* * * * *"

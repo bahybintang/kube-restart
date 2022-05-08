@@ -1,11 +1,16 @@
 package config
 
 import (
+	"flag"
+	"path/filepath"
+
+	"github.com/bahybintang/kube-restart/pkg/model"
 	"github.com/bahybintang/kube-restart/pkg/utils"
 	"github.com/caarlos0/env"
 	"github.com/go-playground/validator"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
+	"k8s.io/client-go/util/homedir"
 )
 
 type Config struct {
@@ -13,23 +18,27 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Deployments []struct {
-		Name      string `yaml:"name" validate:"required"`
-		Namespace string `yaml:"namespace" validate:"required"`
-		Schedule  string `yaml:"schedule" validate:"required"`
-	} `yaml:"deployments" validate:"dive"`
-
-	Statefulsets []struct {
-		Name      string `yaml:"name" validate:"required"`
-		Namespace string `yaml:"namespace" validate:"required"`
-		Schedule  string `yaml:"schedule" validate:"required"`
-	} `yaml:"statefulsets" validate:"dive"`
+	Deployments  []*model.App `yaml:"deployments" validate:"dive"`
+	StatefulSets []*model.App `yaml:"statefulsets" validate:"dive"`
 }
 
 func (c *AppConfig) validate() error {
 	validate := validator.New()
 	err := validate.Struct(c)
 	return err
+}
+
+var (
+	kubeconfig *string
+)
+
+func init() {
+	if home := homedir.HomeDir(); home != "" {
+		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	}
+	flag.Parse()
 }
 
 func GetAppConfig() *AppConfig {
@@ -57,4 +66,8 @@ func GetConfig() *Config {
 		logrus.Fatal("Unable to parse environment variables: ", err)
 	}
 	return config
+}
+
+func GetKubeConfig() *string {
+	return kubeconfig
 }
