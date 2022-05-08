@@ -15,7 +15,7 @@ import (
 )
 
 type Config struct {
-	ConfigPath string `env:"CONFIG_PATH" envDocs:"File path for kube-restart config" envDefault:"/etc/kube-restart.yml"`
+	ConfigPath string `env:"CONFIG_PATH" envDocs:"File path for kube-restart config" envDefault:"/etc/kube-restart/config.yml"`
 }
 
 type AppConfig struct {
