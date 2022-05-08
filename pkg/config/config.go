@@ -2,7 +2,6 @@ package config
 
 import (
 	"flag"
-	"path/filepath"
 
 	"github.com/bahybintang/kube-restart/pkg/model"
 	"github.com/bahybintang/kube-restart/pkg/utils"
@@ -10,7 +9,9 @@ import (
 	"github.com/go-playground/validator"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
-	"k8s.io/client-go/util/homedir"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 type Config struct {
@@ -29,16 +30,17 @@ func (c *AppConfig) validate() error {
 }
 
 var (
-	kubeconfig *string
+	kubeconfig = flag.String("kubeconfig", "", "(optional) absolute path to the kubeconfig file")
 )
 
 func init() {
-	if home := homedir.HomeDir(); home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
 	flag.Parse()
+	logrus.Info(*kubeconfig)
+	// Test kube config is valid
+	_, err := GetKubeClient()
+	if err != nil {
+		logrus.Fatal("Failed to initialize kube client: ", err)
+	}
 }
 
 func GetAppConfig() *AppConfig {
@@ -68,6 +70,23 @@ func GetConfig() *Config {
 	return config
 }
 
-func GetKubeConfig() *string {
-	return kubeconfig
+func GetKubeClient() (dynamic.Interface, error) {
+	var config *rest.Config
+	var err error
+	if *kubeconfig == "" {
+		config, err = rest.InClusterConfig()
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
+		if err != nil {
+			return nil, err
+		}
+	}
+	client, err := dynamic.NewForConfig(config)
+	if err != nil {
+		return nil, err
+	}
+	return client, nil
 }

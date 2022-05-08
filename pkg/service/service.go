@@ -11,8 +11,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/client-go/dynamic"
-	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/retry"
 )
 
@@ -37,12 +35,7 @@ func RestartStatefulSet(sts *model.App) error {
 }
 
 func RestartApp(app *model.App, resource *schema.GroupVersionResource) error {
-	kubeconfig := config.GetKubeConfig()
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
-	if err != nil {
-		return err
-	}
-	client, err := dynamic.NewForConfig(config)
+	client, err := config.GetKubeClient()
 	if err != nil {
 		return err
 	}
