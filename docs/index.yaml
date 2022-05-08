@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  kube-restart:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-05-09T06:56:47.02604664+07:00"
+    description: Helm chart for kube-restart
+    digest: 4c05770e4adf773e5197377a7c468b6b77a6255c58f9fc0dfe6ba41167b93e50
+    name: kube-restart
+    type: application
+    urls:
+    - kube-restart-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-05-09T06:56:47.02576247+07:00"
