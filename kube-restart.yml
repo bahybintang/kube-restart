@@ -2,6 +2,9 @@ deployments:
 - name: demo-deployment
   namespace: default
   schedule: "* * * * *"
+- name: ingress-nginx-controller
+  namespace: ingress-nginx
+  schedule: "* * * * *"
 
 statefulsets:
 - name: demo-statefulsets-redis-replicas
