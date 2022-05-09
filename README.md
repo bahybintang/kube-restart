@@ -79,3 +79,5 @@ CONFIG_PATH=<CONFIG_PATH> ./kube-restart  --kubeconfig=<KUBECONFIG_PATH>
 helm repo add kube-restart https://bahybintang.github.io/kube-restart
 helm install kube-restart kube-restart/kube-restart
 ```
+
+You can specify config in the Helm values, see [this](https://github.com/bahybintang/kube-restart/blob/master/charts/kube-restart/values.yaml) example.
