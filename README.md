@@ -70,7 +70,7 @@ make build
 
 ```bash
 make build
-CONFIG_PATH=<CONFIG_PATH> ./kube-restart  --kubeconfig=<KUBECONFIG_PATH>
+CONFIG_PATH=<CONFIG_PATH> ./service  --kubeconfig=<KUBECONFIG_PATH>
 ```
 
 ### Install in Cluster
