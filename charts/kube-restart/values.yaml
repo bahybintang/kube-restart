@@ -1,5 +1,4 @@
 name: kube-restart
-namespace: default
 version: latest
 config: |-
   deployments:
