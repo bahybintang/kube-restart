@@ -1,4 +1,4 @@
-<h1>Kube Restart</h1>
+<h1>kube-restart</h1>
 
 <h4>Helps you periodically restart your k8s deployments!</h4>
 
@@ -70,7 +70,7 @@ make build
 
 ```bash
 make build
-CONFIG_PATH=<CONFIG_PATH> ./kube-restart  --kubeconfig=<KUBECONFIG_PATH>
+CONFIG_PATH=<CONFIG_PATH> ./service  --kubeconfig=<KUBECONFIG_PATH>
 ```
 
 ### Install in Cluster
