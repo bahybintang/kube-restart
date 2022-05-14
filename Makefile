@@ -1,5 +1,5 @@
 run:
-	CONFIG_PATH=./kube-restart.yml go run main.go --kubeconfig="/home/$(shell whoami)/.kube/config"
+	LOG_LEVEL=debug CONFIG_PATH=./kube-restart.yml go run main.go --kubeconfig="/home/$(shell whoami)/.kube/config"
 
 build-image:
 	docker build -t bintangbahy/kube-restart .

@@ -3,10 +3,20 @@ package cmd
 import (
 	"time"
 
+	"github.com/bahybintang/kube-restart/pkg/config"
 	"github.com/bahybintang/kube-restart/pkg/service"
 	cron "github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 )
+
+func init() {
+	lvl := config.GetConfig().LogLevel
+	ll, err := logrus.ParseLevel(lvl)
+	if err != nil {
+		ll = logrus.DebugLevel
+	}
+	logrus.SetLevel(ll)
+}
 
 func Main() {
 	logrus.Info("Starting kube restart!")
