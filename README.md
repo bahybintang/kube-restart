@@ -52,7 +52,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kube.restart/schedule: '*/1 * * * *'
+    kube.restart/schedule: '1 * * * *'
   name: demo-deployment
   namespace: default
 ...
