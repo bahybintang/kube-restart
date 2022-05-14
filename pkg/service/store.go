@@ -1,9 +1,12 @@
 package service
 
 import (
+	"regexp"
+
 	"github.com/bahybintang/kube-restart/pkg/config"
 	"github.com/bahybintang/kube-restart/pkg/model"
 	cron "github.com/robfig/cron/v3"
+	"github.com/sirupsen/logrus"
 )
 
 type StrippedApp struct {
@@ -87,4 +90,22 @@ func (s *Store) AddOrUpdateStatefulSet(app *StrippedApp, schedule string) (bool,
 	s.StatefulSetsCronEntry[*app] = entryId
 
 	return !ok, nil
+}
+
+func (s *Store) IsDeploymentPresentWithTheSameConfig(app *StrippedApp, schedule string) bool {
+	val, ok := s.Deployments[*app]
+	logrus.Debug("Validating deployment: ", app, val, ok)
+	return ok && val == schedule
+}
+
+func (s *Store) IsStatefulSetPresentWithTheSameConfig(app *StrippedApp, schedule string) bool {
+	val, ok := s.StatefulSets[*app]
+	logrus.Debug("Validating sts: ", app, val, ok)
+	return ok && val == schedule
+}
+
+func ValidateSchedule(schedule string) bool {
+	logrus.Debug("Validating schedule: ", schedule)
+	regex, _ := regexp.Compile(`/(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/`)
+	return regex.MatchString(schedule)
 }
