@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"regexp"
 
 	"github.com/bahybintang/kube-restart/pkg/config"
@@ -94,18 +95,19 @@ func (s *Store) AddOrUpdateStatefulSet(app *StrippedApp, schedule string) (bool,
 
 func (s *Store) IsDeploymentPresentWithTheSameConfig(app *StrippedApp, schedule string) bool {
 	val, ok := s.Deployments[*app]
-	logrus.Debug("Validating deployment: ", app, val, ok)
+	logrus.Debug(fmt.Sprintf("Validating deployment: %v %v %v", app, val, ok))
 	return ok && val == schedule
 }
 
 func (s *Store) IsStatefulSetPresentWithTheSameConfig(app *StrippedApp, schedule string) bool {
 	val, ok := s.StatefulSets[*app]
-	logrus.Debug("Validating sts: ", app, val, ok)
+	logrus.Debug(fmt.Sprintf("Validating sts: %v %v %v", app, val, ok))
 	return ok && val == schedule
 }
 
 func ValidateSchedule(schedule string) bool {
-	logrus.Debug("Validating schedule: ", schedule)
-	regex, _ := regexp.Compile(`/(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/`)
-	return regex.MatchString(schedule)
+	regex, _ := regexp.Compile(`(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})`)
+	ret := regex.MatchString(schedule)
+	logrus.Debug(fmt.Sprintf("Validating schedule: %v %v", schedule, ret))
+	return ret
 }

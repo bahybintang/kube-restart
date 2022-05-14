@@ -24,7 +24,7 @@ func DeploymentWatcher(s *Store, cron *cron.Cron) (cache.Controller, error) {
 			Name:      u.GetName(),
 			Namespace: u.GetNamespace(),
 		}
-		if s.IsDeploymentPresentWithTheSameConfig(app, schedule) && ValidateSchedule(schedule) {
+		if ValidateSchedule(schedule) && !s.IsDeploymentPresentWithTheSameConfig(app, schedule) {
 			types, err := s.AddOrUpdateDeployment(app, schedule)
 			if err != nil {
 				logrus.Error("Failed to register deployment: ", err)
@@ -46,7 +46,7 @@ func StatefulSetWatcher(s *Store, cron *cron.Cron) (cache.Controller, error) {
 			Name:      u.GetName(),
 			Namespace: u.GetNamespace(),
 		}
-		if s.IsStatefulSetPresentWithTheSameConfig(app, schedule) && ValidateSchedule(schedule) {
+		if ValidateSchedule(schedule) && !s.IsStatefulSetPresentWithTheSameConfig(app, schedule) {
 			types, err := s.AddOrUpdateStatefulSet(app, schedule)
 			if err != nil {
 				logrus.Error("Failed to register statefulset: ", err)
